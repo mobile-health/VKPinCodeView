@@ -221,22 +221,35 @@ public final class VKPinCodeView: UIView {
     }
     
     private func deleteChar(_ text: String) {
-        
-        let index = text.count
-        let previous = _stack.arrangedSubviews[index] as! UILabel
-        previous.text = ""
-        _code = text
+        let trimmed = String(text.prefix(length))
+        _code = trimmed
+
+        for i in 0..<length {
+            let label = _stack.arrangedSubviews[normalizeIndex(index: i)] as! VKLabel
+            if i < trimmed.count {
+                let chIndex = trimmed.index(trimmed.startIndex, offsetBy: i)
+                label.text = String(trimmed[chIndex])
+            } else {
+                label.text = nil
+            }
+        }
     }
-    
+
     private func appendChar(_ text: String) {
-        
         if text.isEmpty { return }
 
-        let index = text.count - 1
-        let activeLabel = _stack.arrangedSubviews[index] as! UILabel
-        let charIndex = text.index(text.startIndex, offsetBy: index)
-        activeLabel.text = String(text[charIndex])
-        _code += activeLabel.text!
+        let trimmed = String(text.prefix(length))
+        _code = trimmed
+
+        for i in 0..<length {
+            let label = _stack.arrangedSubviews[normalizeIndex(index: i)] as! VKLabel
+            if i < trimmed.count {
+                let chIndex = trimmed.index(trimmed.startIndex, offsetBy: i)
+                label.text = String(trimmed[chIndex])
+            } else {
+                label.text = nil
+            }
+        }
     }
     
     private func highlightActiveLabel(_ activeIndex: Int) {
